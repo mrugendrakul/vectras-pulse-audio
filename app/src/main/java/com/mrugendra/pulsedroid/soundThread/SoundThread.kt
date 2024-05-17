@@ -15,7 +15,7 @@ import java.net.UnknownHostException
 
 val TAG = "SoundThread"
 
-class SoundThread(private val Server: String, Port: String, private  val callback :(Exception)->Unit) : Runnable{
+class SoundThread(private val Server: String, Port: String, private  val callback :(String)->Unit) : Runnable{
     private var mTerminate = false
     private var mServer = Server
     private val mPort = Port.toInt()
@@ -29,19 +29,20 @@ class SoundThread(private val Server: String, Port: String, private  val callbac
         var audioData: BufferedInputStream? = null
         try {
             sock = Socket(mServer, mPort)
+            callback("Connected")
         } catch (e: UnknownHostException) {
             // TODO if the host name could not be resolved into an IP address.
             Terminate()
             e.printStackTrace()
             Log.e(TAG,"Unknown Host here  : $e")
-            callback(e)
+            callback("Unknown Host : $e")
 //            throw e
         } catch (e: IOException) {
             // TODO if an error occurs while creating the socket
             Terminate()
             e.printStackTrace()
             Log.e(TAG,"IOException : $e")
-            callback(e)
+            callback(e.message.toString())
 //            sock = null
 //            throw e
         } catch (e: SecurityException) {
@@ -50,7 +51,7 @@ class SoundThread(private val Server: String, Port: String, private  val callbac
             Terminate()
             e.printStackTrace()
             Log.e(TAG,"Security : $e")
-            callback(e)
+            callback(e.message.toString())
 //            sock = null
 //            throw e
         }
@@ -67,7 +68,7 @@ class SoundThread(private val Server: String, Port: String, private  val callbac
                 // TODO Auto-generated catch block
                 Terminate()
                 e.printStackTrace()
-                callback(e)
+                callback(e.message.toString())
 //                throw e
             }
         }
@@ -109,7 +110,7 @@ class SoundThread(private val Server: String, Port: String, private  val callbac
             } catch (e: IOException) {
                 // TODO Auto-generated catch block
                 e.printStackTrace()
-                callback(e)
+                callback(e.message.toString())
 //                throw e
             }
         }
