@@ -30,9 +30,15 @@ open class PulseViewModel:ViewModel(){
 
     var playThread : SoundThread? = null
 
-    fun errorDisplay(error:Exception){
+    fun errorDisplay(status:String = "Connected"){
+        var playState:Boolean = false
+        if( status ==  "Connected"){
+            playState = true
+        }
+
         _uiState.update { it->it.copy(
-            error = "$error"
+            error = status,
+            playButton = playState
         ) }
     }
 
@@ -41,7 +47,8 @@ open class PulseViewModel:ViewModel(){
 //            playState = true
             _uiState.update { it ->
                 it.copy(
-                    playButton = true
+                    playButton = true,
+                    error = "Connecting..."
                 )
             }
 //            playButton.setText("Stop")
@@ -78,7 +85,8 @@ open class PulseViewModel:ViewModel(){
 //            payState = false
 //            playButton.setText("Play!")l
             _uiState.update { it->it.copy(
-                playButton = false
+                playButton = false,
+                error = ""
             ) }
             try
             { playThread?.Terminate() }

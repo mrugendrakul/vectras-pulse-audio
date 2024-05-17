@@ -83,8 +83,9 @@ fun PulseUi(name: String, modifier: Modifier = Modifier) {
                     }
                 )
             }
-            Text(text = "Error appear here : ")
-            Text(text = appUiState.error)
+//            Text(text = "Error appear here : ")
+            Text(text = appUiState.error
+                )
         }
     }
 }
